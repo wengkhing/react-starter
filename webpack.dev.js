@@ -11,5 +11,11 @@ module.exports = merge(commonConfig, {
     },
     hot: true,
     port: 3000,
+    historyApiFallback: true,
+    client: {
+      overlay: {
+        errors: true
+      }
+    }
   },
 });
