@@ -1,13 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const slsw = require('serverless-webpack');
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: slsw.lib.entries,
+  mode: 'development',
   output: {
-    filename: 'static/[name].[contenthash].js',
-    path: path.resolve(__dirname, './dist'),
+    filename: '[name].js',
+    path: path.resolve(__dirname, './buildSls'),
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -16,9 +17,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/public/index.html',
       publicPath: './'
-    }),
-    new MiniCssExtractPlugin({
-      filename: 'static/[name].[contenthash].css'
     }),
     new ForkTsCheckerWebpackPlugin()
   ],
@@ -32,7 +30,6 @@ module.exports = {
       {
         test: /\.s?css$/i,
         use: [
-          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
           {

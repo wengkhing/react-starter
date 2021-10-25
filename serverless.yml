@@ -1,0 +1,29 @@
+service: react-serverless
+frameworkVersion: '2'
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+custom:
+  # config: ${file(config/env/${self:provider.stage}.yml)}
+  webpack:
+    webpackConfig: './webpack.sls.js'
+    includeModules:
+      packagePath: 'package.json'
+    packager: 'yarn'
+
+provider:
+  name: aws
+  lambdaHashingVersion: 20201221
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  region: ap-southeast-1
+  # environment:
+  #   STATIC_DOMAIN: ${self:custom.config.STATIC_DOMAIN}
+
+functions:
+  servePage:
+    handler: 'src/server/handler.main'
+    events:
+      - httpApi: '*'
