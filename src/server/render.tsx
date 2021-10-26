@@ -26,5 +26,5 @@ export default (path: string) => {
     .replace('</head>', `${context.helmet.meta.toString()}</head>`)
     .replace('</head>', `${context.helmet.link.toString()}</head>`)
     .replace('<body>', `<body ${context.helmet.bodyAttributes.toString()}>`)
-    .replace(/(\.\/)?static/g, 'http://localhost:8080/static/');
+    .replace(/(\.\/)?static/g, 'http://localhost:8080/static');
 };

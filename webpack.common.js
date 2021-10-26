@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -20,7 +21,13 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'static/[name].[contenthash].css'
     }),
-    new ForkTsCheckerWebpackPlugin()
+    new ForkTsCheckerWebpackPlugin(),
+    new FaviconsWebpackPlugin({
+      logo: './src/public/logo512.png',
+      outputPath: 'static',
+      prefix: 'static/',
+      manifest: './src/public/manifest.json'
+    }),
   ],
   module: {
     rules: [
