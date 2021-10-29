@@ -4,16 +4,17 @@ import { StaticRouter } from 'react-router-dom';
 import { matchPath, RouteProps } from 'react-router';
 import { renderToString } from 'react-dom/server';
 import { HelmetData, HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
 
 import App from '../App';
 import routes from '../app.route';
-import { AxiosResponse } from 'axios';
+import store from '../store/store';
 
 const html = readFileSync('./dist/index.html').toString();
 
 interface AsyncComponent {
   (): JSX.Element;
-  asyncData?(): Promise<AxiosResponse>;
+  asyncData?(): Promise<any>;
 }
 
 const matchRoute = (path: string, routes: RouteProps[]): RouteProps => {
@@ -29,18 +30,16 @@ export default async (path: string) => {
   const { component: Component } = matchRoute(path, routes);
 
   try {
-    const response = (await (Component as AsyncComponent)?.asyncData?.call(
-      null
-    )) as AxiosResponse;
-
-    const { data } = response || {};
+    const data = await (Component as AsyncComponent)?.asyncData?.call(null);
 
     const markup = renderToString(
-      <HelmetProvider context={helmetContext}>
-        <StaticRouter location={path} context={data}>
-          <App />
-        </StaticRouter>
-      </HelmetProvider>
+      <Provider store={store}>
+        <HelmetProvider context={helmetContext}>
+          <StaticRouter location={path} context={data}>
+            <App />
+          </StaticRouter>
+        </HelmetProvider>
+      </Provider>
     );
 
     const { helmet } = helmetContext;

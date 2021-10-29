@@ -1,11 +1,10 @@
-import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { StaticRouterContext } from 'react-router';
 import { isServer, isClient } from '../helper/detect';
 
 export const useAsyncData = (
   context: StaticRouterContext,
-  request: () => Promise<AxiosResponse>
+  request: () => Promise<any>
 ) => {
   let data;
   if (isServer) {
@@ -19,10 +18,10 @@ export const useAsyncData = (
       [data, setData] = useState();
 
       useEffect(() => {
-        request().then((response) => setData(response.data));
+        request().then(setData);
       }, []);
     }
   }
 
-  return { data };
+  return data;
 };
