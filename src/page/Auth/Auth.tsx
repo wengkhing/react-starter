@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import axios from 'axios';
 import logo from '../../logo.svg';
 import { Link } from 'react-router-dom';
@@ -7,10 +7,8 @@ const Auth = () => {
   return (
     <header className='App-header'>
       <img src={logo} className='App-logo' alt='logo' />
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <Link to='/auth'>Sign In</Link>
+      <p>This is auth page</p>
+      <Link to='/'>Back to Home Page</Link>
     </header>
   );
 };

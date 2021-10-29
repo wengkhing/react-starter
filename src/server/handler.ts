@@ -13,4 +13,4 @@ const handler = serverless(app);
 exports.main = async (event: APIGatewayEvent, context: Context) => {
   const result = await handler(event, context);
   return result;
-}
+};
