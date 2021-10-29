@@ -1,19 +1,26 @@
 import React, { ComponentProps } from 'react';
+import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
 import logo from '../../logo.svg';
 import { Link } from 'react-router-dom';
 import { useAsyncData } from '../../hook/useAsyncData';
 
-const Auth = ({ staticContext }: ComponentProps<any>) => {
-  const { data } = useAsyncData(staticContext, Auth.asyncData);
+const Auth = (prop: ComponentProps<any>) => {
+  const { data } = useAsyncData(prop.staticContext, Auth.asyncData);
 
   return (
-    <header className='App-header'>
-      <img src={logo} className='App-logo' alt='logo' />
-      <p>{JSON.stringify(data)}</p>
-      <p>This is auth page</p>
-      <Link to='/'>Back to Home Page</Link>
-    </header>
+    <>
+      <Helmet>
+        <title>Auth Title</title>
+        <meta name='description' content='Auth page for react starter' />
+      </Helmet>
+      <header className='App-header'>
+        <img src={logo} className='App-logo' alt='logo' />
+        <p>{JSON.stringify(data)}</p>
+        <p>This is auth page</p>
+        <Link to='/'>Back to Home Page</Link>
+      </header>
+    </>
   );
 };
 

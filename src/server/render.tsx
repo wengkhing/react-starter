@@ -3,8 +3,7 @@ import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { matchPath, RouteProps } from 'react-router';
 import { renderToString } from 'react-dom/server';
-import { HelmetData } from 'react-helmet';
-import { HelmetProvider } from 'react-helmet-async';
+import { HelmetData, HelmetProvider } from 'react-helmet-async';
 
 import App from '../App';
 import routes from '../app.route';
@@ -26,7 +25,7 @@ const matchRoute = (path: string, routes: RouteProps[]): RouteProps => {
 };
 
 export default async (path: string) => {
-  const context = { helmet: {} as HelmetData };
+  const helmetContext = { helmet: {} as HelmetData };
   const { component: Component } = matchRoute(path, routes);
 
   try {
@@ -37,23 +36,25 @@ export default async (path: string) => {
     const { data } = response || {};
 
     const markup = renderToString(
-      <HelmetProvider context={context}>
+      <HelmetProvider context={helmetContext}>
         <StaticRouter location={path} context={data}>
           <App />
         </StaticRouter>
       </HelmetProvider>
     );
 
+    const { helmet } = helmetContext;
+
     return html
       .replace('<div id="root"></div>', `<div id="root">${markup}</div>`)
-      .replace('<title>React App</title>', context.helmet.title.toString())
-      .replace('</head>', `${context.helmet.meta.toString()}</head>`)
-      .replace('</head>', `${context.helmet.link.toString()}</head>`)
+      .replace('<title>React App</title>', helmet.title.toString())
+      .replace('<meta name="placeholder">', `${helmet.meta.toString()}`)
+      .replace('</head>', `${helmet.link.toString()}</head>`)
       .replace(
         '</head>',
         `<script>window.ASYNC_DATA=${JSON.stringify(data)}</script></head>`
       )
-      .replace('<body>', `<body ${context.helmet.bodyAttributes.toString()}>`)
+      .replace('<body>', `<body ${helmet.bodyAttributes.toString()}>`)
       .replace(/(\.\/)?static/g, 'http://localhost:8080/static');
   } catch (err) {
     console.error(err);
