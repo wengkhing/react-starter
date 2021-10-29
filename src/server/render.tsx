@@ -35,11 +35,10 @@ export default async (path: string) => {
     )) as AxiosResponse;
 
     const { data } = response || {};
-    console.log('data ===>', data);
 
     const markup = renderToString(
       <HelmetProvider context={context}>
-        <StaticRouter location={path}>
+        <StaticRouter location={path} context={data}>
           <App />
         </StaticRouter>
       </HelmetProvider>
@@ -50,6 +49,10 @@ export default async (path: string) => {
       .replace('<title>React App</title>', context.helmet.title.toString())
       .replace('</head>', `${context.helmet.meta.toString()}</head>`)
       .replace('</head>', `${context.helmet.link.toString()}</head>`)
+      .replace(
+        '</head>',
+        `<script>window.ASYNC_DATA=${JSON.stringify(data)}</script></head>`
+      )
       .replace('<body>', `<body ${context.helmet.bodyAttributes.toString()}>`)
       .replace(/(\.\/)?static/g, 'http://localhost:8080/static');
   } catch (err) {
