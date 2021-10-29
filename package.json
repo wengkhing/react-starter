@@ -1,5 +1,5 @@
 {
-  "name": "react-starter",
+  "name": "serverless-react",
   "version": "0.1.0",
   "private": true,
   "author": {
@@ -103,7 +103,9 @@
     "webpack-merge": "^5.8.0"
   },
   "keywords": [
+    "react",
     "serverless",
+    "sls",
     "server-side rendering",
     "ssr",
     "typescript",
