@@ -4,8 +4,8 @@ import render from './render';
 import { APIGatewayEvent, Context } from 'aws-lambda';
 const app = express();
 
-app.get('*', (req: Request, res) => {
-  res.send(render(req.path));
+app.get('*', async (req: Request, res) => {
+  res.send(await render(req.path));
 });
 
 const handler = serverless(app);
