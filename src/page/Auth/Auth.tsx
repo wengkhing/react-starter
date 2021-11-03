@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import logo from '../../logo.svg';
 import { Link } from 'react-router-dom';
 import { useAsyncData } from '../../hook/useAsyncData';
-import appInterceptedAxios from '../../helper/api';
+import axios from '../../helper/api';
 
 const Auth = (prop: ComponentProps<any>) => {
   const data = useAsyncData(prop.staticContext, Auth.asyncData);
@@ -25,12 +25,13 @@ const Auth = (prop: ComponentProps<any>) => {
 };
 
 Auth.asyncData = async () => {
-  return await appInterceptedAxios({
-    requestKey: 'get-mock-data',
-    isInterruptive: true,
-    method: 'GET',
-    url: 'https://mocki.io/v1/937f945f-c492-4785-9c42-fa889556e64e',
-  });
+  return await axios.get(
+    'https://mocki.io/v1/937f945f-c492-4785-9c42-fa889556e64e',
+    {
+      requestKey: 'get-mock-data',
+      isInterruptive: true,
+    }
+  );
 };
 
 export default Auth;

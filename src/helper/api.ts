@@ -1,7 +1,7 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { startLoading, endLoading } from '../store/app.slice';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { startLoading, endLoading, setError } from '../store/app.slice';
 import store from '../store/store';
-import { isClient, isServer } from './detect';
+import { isClient } from './detect';
 
 export interface LoadingConfig {
   requestKey: string;
@@ -11,21 +11,61 @@ export interface LoadingConfig {
 export type ExtendedAxiosRequestConfig<T = any> = AxiosRequestConfig<T> &
   LoadingConfig;
 
-const appInterceptedAxios = async (config: ExtendedAxiosRequestConfig) => {
-  const { requestKey, isInterruptive, ...axiosConfig } = config;
-  let data;
-
-  const http = axios.create();
-
-  if (isServer) {
-    ({ data } = await http.request(axiosConfig));
-  } else if (isClient) {
-    store.dispatch(startLoading({ requestKey, isInterruptive }));
-    ({ data } = await http.request(axiosConfig));
-    store.dispatch(endLoading({ requestKey, isInterruptive }));
-  }
-
-  return data;
+const dispatch = (action: any) => {
+  isClient && store.dispatch(action);
 };
 
-export default appInterceptedAxios;
+const interceptor = async <T = any>(
+  request: (...args: any[]) => Promise<AxiosResponse>,
+  url: string,
+  config: ExtendedAxiosRequestConfig,
+  body?: any
+): Promise<T> => {
+  const { requestKey, isInterruptive, ...axiosConfig } = config;
+
+  dispatch(startLoading({ requestKey, isInterruptive }));
+
+  try {
+    const payload = [url, body, axiosConfig].filter(Boolean);
+    const { data } = await request(...payload);
+
+    return data as T;
+  } catch (error) {
+    store.dispatch(setError({ requestKey, error: error as Error }));
+    throw error;
+  } finally {
+    dispatch(endLoading({ requestKey, isInterruptive }));
+  }
+};
+
+const interceptedAxios = {
+  ...axios,
+  get: <T = any>(
+    url: string,
+    config: ExtendedAxiosRequestConfig
+  ): Promise<T> => {
+    return interceptor(axios.get, url, config);
+  },
+  delete: <T = any>(
+    url: string,
+    config: ExtendedAxiosRequestConfig
+  ): Promise<T> => {
+    return interceptor(axios.delete, url, config);
+  },
+  post: <T = any>(
+    url: string,
+    body: any,
+    config: ExtendedAxiosRequestConfig
+  ): Promise<T> => {
+    return interceptor(axios.post, url, config, body);
+  },
+  put: <T = any>(
+    url: string,
+    body: any,
+    config: ExtendedAxiosRequestConfig
+  ): Promise<T> => {
+    return interceptor(axios.put, url, config, body);
+  },
+};
+
+export default interceptedAxios;
