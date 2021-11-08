@@ -162,6 +162,7 @@ const execute = async function () {
     }
     await uploadDir(config.buildPath, config.bucketName);
   } catch (err) {
+    console.error(err);
     console.error('Bucket sync error. Exiting..');
     process.exit(1);
   }
