@@ -4,12 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const appConfig = require('../config/app.config');
 
-const config = {
-  bucketName: `${appConfig.bucketName}-${DEPLOY_ENV}`,
-  bucketRegion: appConfig.bucketRegion,
-  buildPath: 'dist',
-};
-
 let s3 = new AWS.S3();
 
 const DEPLOY_ENV = process.argv[2];
@@ -18,6 +12,12 @@ if (!DEPLOY_ENV) {
   console.log(`${process.argv[1]} [dev|prod]`);
   process.exit(1);
 }
+
+const config = {
+  bucketName: `${appConfig.bucketName}-${DEPLOY_ENV}`,
+  bucketRegion: appConfig.bucketRegion,
+  buildPath: 'dist',
+};
 
 const IS_DEV = DEPLOY_ENV === 'dev';
 
