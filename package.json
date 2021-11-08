@@ -9,7 +9,9 @@
     "start": "webpack serve --config ./webpack.devServer.js",
     "start:ssr": "yarn serve-static & sls offline",
     "serve-static": "yarn build && http-server dist/",
+    "deploy": "chmod +x ./script/deploy.sh && ./script/deploy.sh",
     "build": "rm -rf dist/ && webpack build --config ./webpack.build.js",
+    "upload": "node ./script/upload.js",
     "test": "jest"
   },
   "dependencies": {
