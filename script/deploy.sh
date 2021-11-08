@@ -12,5 +12,5 @@ case $DEPLOY_ENV in
 esac
 
 yarn build
-yarn upload $DEPLOY_ENV
+yarn upload $DEPLOY_ENV &&
 npx sls deploy --stage $DEPLOY_ENV
