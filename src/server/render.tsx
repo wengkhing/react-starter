@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import App from '../App';
 import routes from '../app.route';
 import store from '../store/store';
+import config from '../../config/app.config';
 
 const html = readFileSync('./dist/index.html').toString();
 
@@ -54,7 +55,7 @@ export default async (path: string) => {
         `<script>window.ASYNC_DATA=${JSON.stringify(data)}</script></head>`
       )
       .replace('<body>', `<body ${helmet.bodyAttributes.toString()}>`)
-      .replace(/(\.\/)?static/g, 'http://localhost:8080/static');
+      .replace(/(\.\/)?static/g, `${config.staticDomain}/static`);
   } catch (err) {
     console.error(err);
   }
