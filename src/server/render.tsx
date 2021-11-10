@@ -1,4 +1,3 @@
-import { readFileSync } from 'fs';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { matchPath, RouteProps } from 'react-router';
@@ -10,8 +9,7 @@ import App from '../App';
 import routes from '../app.route';
 import store from '../store/store';
 import config from '../../config/app.config';
-
-const html = readFileSync('./dist/index.html').toString();
+import html from '../../dist/index.html';
 
 interface AsyncComponent {
   (): JSX.Element;
