@@ -88,6 +88,7 @@ const createBucket = async function (bucket) {
     console.log('Bucket:', bucket, 'exists. Skipping bucket creation.');
   } catch (err) {
     try {
+      console.log('Bucket:', bucket, 'creating..');
       await s3
         .createBucket({
           Bucket: bucket,
@@ -99,6 +100,26 @@ const createBucket = async function (bucket) {
         .promise();
 
       console.log('Bucket:', bucket, 'created succesfully.');
+      console.log('Bucket:', bucket, 'updating bucket policy..');
+
+      await s3
+        .putBucketPolicy({
+          Bucket: bucket,
+          Policy: JSON.stringify({
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Sid: 'PublicReadGetObject',
+                Effect: 'Allow',
+                Principal: '*',
+                Action: 's3:GetObject',
+                Resource: `arn:aws:s3:::${bucket}/*`
+              }
+            ]
+          })
+        }).promise()
+
+        console.log('Bucket:', bucket, 'updated bucket policy successfully');
     } catch (err) {
       console.error('Error creating bucket');
       throw err;
