@@ -1,14 +1,15 @@
-const appName = process.env.APP_NAME;
+const appName = 'react-serverless';
+const region = 'ap-southeast-1';
+
 const bucketName = `${appName}-assets`;
-const bucketRegion = process.env.region;
 const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-const deployedDomain = `https://${bucketName}-${environment}.s3.${bucketRegion}.amazonaws.com`;
+const deployedDomain = `https://${bucketName}-${environment}.s3.${region}.amazonaws.com`;
 const staticDomain =
   process.env.IS_OFFLINE === 'true'
     ? 'http://localhost:8080'
     : deployedDomain;
 
 exports.appName = appName;
+exports.region = region;
 exports.bucketName = bucketName;
-exports.bucketRegion = bucketRegion;
 exports.staticDomain = staticDomain

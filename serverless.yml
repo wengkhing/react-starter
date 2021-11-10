@@ -1,4 +1,4 @@
-service: ${self:custom.config.APP_NAME}
+service: ${self:custom.config.appName}
 frameworkVersion: '2'
 
 plugins:
@@ -6,7 +6,7 @@ plugins:
   - serverless-offline
 
 custom:
-  config: ${file(config/app.yml)}
+  config: ${file(./config/app.config.js)}
   webpack:
     webpackConfig: './webpack.sls.js'
     includeModules:
@@ -18,9 +18,7 @@ provider:
   lambdaHashingVersion: 20201221
   runtime: nodejs14.x
   stage: ${opt:stage, 'dev'}
-  region: ${self:custom.config.REGION}
-  environment:
-    APP_NAME: ${self:custom.config.APP_NAME}
+  region: ${self:custom.config.region}
 
 functions:
   servePage:

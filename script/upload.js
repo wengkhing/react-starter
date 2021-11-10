@@ -15,7 +15,7 @@ if (!DEPLOY_ENV) {
 
 const config = {
   bucketName: `${appConfig.bucketName}-${DEPLOY_ENV}`,
-  bucketRegion: appConfig.bucketRegion,
+  bucketRegion: appConfig.region,
   buildPath: 'dist',
 };
 
