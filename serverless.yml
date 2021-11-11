@@ -12,6 +12,9 @@ custom:
     includeModules:
       packagePath: 'package.json'
     packager: 'yarn'
+  variable:
+    dev: development
+    prod: production
 
 provider:
   name: aws
@@ -19,6 +22,8 @@ provider:
   runtime: nodejs14.x
   stage: ${opt:stage, 'dev'}
   region: ${self:custom.config.region}
+  environment:
+    NODE_ENV: ${self:custom.variable.${self:provider.stage}}
 
 functions:
   servePage:
