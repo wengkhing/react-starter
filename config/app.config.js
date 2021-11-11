@@ -1,5 +1,9 @@
+// Configuration for deployment
+
 const appName = 'react-serverless';
 const region = 'ap-southeast-1';
+
+// Do not change the below
 
 const bucketName = `${appName}-assets`;
 const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';

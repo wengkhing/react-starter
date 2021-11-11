@@ -3,6 +3,7 @@
 Serverless SSR data fetching enabled minimal react starter.
 
 ## Motivation
+- Getting the power of server-side rendering
 - Maximize cost efficiency, there's no need to run an instance 24/7 to serve the web application
 - Scale with 100% efficiency
 - Save time, no provisioning or managing of infrastructure
@@ -22,6 +23,8 @@ It can be tricky when comes to serving web application using serverless, the mot
 
 ## Getting Started
 
+### Development
+
 For general development purpose with live hot reload enabled,
 it is best to use `yarn start`.
 
@@ -32,3 +35,17 @@ This script imitate production-like environment where static files are served fr
 - [localhost:3000](localhost:3000) => Server-side rendering entry
 
 Please take note that the development experience for `yarn start:ssr` is not perfect, changes on the code require to re-run the script.
+
+### Deployment
+
+Github pipeline action is written for the ease of deployment.
+Any push to master branch would trigger a prod deployment, any other branches except master would trigger a dev deployment.
+
+For initial setup for deployment:
+
+1. Update app name and region in `app.config.js`
+2. Update region in the pipeline files
+3. Create a new repository in github
+4. Add secrets (AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY) in the repository
+
+For manual deployment, just run `yarn deploy (dev|prod)`
