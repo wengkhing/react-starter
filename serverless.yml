@@ -23,7 +23,7 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${self:custom.config.region}
   environment:
-    NODE_ENV: ${self:custom.variable.${self:provider.stage}}
+    APP_ENV: ${self:custom.variable.${self:provider.stage}}
 
 functions:
   servePage:
