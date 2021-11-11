@@ -13,6 +13,11 @@ const staticDomain =
     ? 'http://localhost:8080'
     : deployedDomain;
 
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('bucketName:', bucketName);
+console.log('environment:', environment);
+console.log('staticDomain:', staticDomain);
+
 exports.appName = appName;
 exports.region = region;
 exports.bucketName = bucketName;
