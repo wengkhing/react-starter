@@ -2,9 +2,6 @@
 
 DEPLOY_ENV=${1:-dev}
 
-yarn build
-yarn upload $DEPLOY_ENV &&
-
 case $DEPLOY_ENV in
   prod)
     export NODE_ENV=production
@@ -14,4 +11,8 @@ case $DEPLOY_ENV in
     ;;
 esac
 
+yarn build
+echo "NODE_ENV: $NODE_ENV"
+yarn upload $DEPLOY_ENV &&
+echo "NODE_ENV: $NODE_ENV"
 npx sls deploy --stage $DEPLOY_ENV
